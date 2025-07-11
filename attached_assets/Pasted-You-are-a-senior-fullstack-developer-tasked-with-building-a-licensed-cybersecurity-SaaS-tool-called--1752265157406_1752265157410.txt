@@ -1,0 +1,56 @@
+You are a senior fullstack developer tasked with building a licensed cybersecurity SaaS tool called **TraceIntel**. It recreates and enhances functionality from the Linux-based Seeker tool, but is web-based, user-friendly, and secure. It allows users to generate a shortlink, send it to a suspicious actor or fraudster, and when the link is clicked, it captures detailed metadata including precise geolocation (if permission granted), IP, browser fingerprint, and displays this data on a map dashboard.
+
+✅ Requirements:
+- Use Node.js (Express) and React
+- Use NeonDB (PostgreSQL) as the database
+- Use the `pg` module to connect to Neon
+- Entire stack runs within Replit
+- Create all required tables via SQL or Prisma (whichever Replit prefers)
+- Optimize code for minimal dependency overhead
+- Code must be organized, clear, and functional for testing immediately
+
+---
+
+📁 App Modules to Create:
+
+1. **Frontend (React)**
+- Public Landing Page: Brief intro to TraceIntel (static)
+- Login/Signup Page (simple form, no OAuth)
+- Dashboard:
+  - Show “Create Tracking Link” form
+  - List of generated links with logs
+  - Map display with markers (use Leaflet.js or Google Maps)
+
+2. **Backend (Express API)**
+- `/api/register` – Create new user in DB (store hashed password using bcrypt)
+- `/api/login` – Return a session token (JWT)
+- `/api/create-link` – Accepts a POST URL, returns short slug
+- `/s/:slug` – Tracking page route (collects metadata)
+  - Uses `navigator.geolocation.getCurrentPosition`
+  - Gets IP via `https://ipapi.co/json/`
+  - Captures: lat/lon, IP, browser, OS, screen resolution, language
+  - Saves to NeonDB `click_events` table
+  - Redirects to final page or shows "Thank you" screen
+
+3. **Database (NeonDB)**
+- `users` table: id (uuid), email, password (hashed), created_at
+- `shortlinks` table: id, slug, user_id, target_url, created_at
+- `click_events`: id, shortlink_id, timestamp, IP, lat/lon, browser, OS, screen, agent
+
+---
+
+🔐 Authentication:
+- Use JWT for protected API calls
+- Store token in browser localStorage
+- Validate user on dashboard load
+
+---
+
+📦 Additional Notes:
+- Use TailwindCSS if styling is needed
+- Use dotenv for NeonDB connection string
+- Replit must be able to run the app instantly (start script required)
+- Do not use serverless; it must persist on Replit
+- Keep prompts lean in dependencies but deep in structure
+
+Now begin building the app in a single fullstack folder. Initialize DB, create all routes and pages. I will expand features in the next prompt once this base is complete.
