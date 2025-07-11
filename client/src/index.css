@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(222, 84%, 5%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 33%, 17%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --popover: hsl(222, 84%, 5%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(217, 33%, 17%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 33%, 17%);
+  --input: hsl(217, 33%, 17%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(222, 84%, 5%);
+  --secondary: hsl(217, 33%, 17%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(217, 33%, 17%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(217, 91%, 60%);
+  --radius: 0.5rem;
+  
+  /* Custom cyber colors */
+  --cyber-dark: hsl(222, 84%, 5%);
+  --cyber-gray: hsl(217, 33%, 17%);
+  --cyber-blue: hsl(217, 91%, 60%);
+  --cyber-green: hsl(158, 64%, 52%);
+  --cyber-amber: hsl(43, 96%, 56%);
+  --cyber-red: hsl(0, 84%, 60%);
+}
+
+.dark {
+  --background: hsl(222, 84%, 5%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 33%, 17%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --popover: hsl(222, 84%, 5%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(217, 33%, 17%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 33%, 17%);
+  --input: hsl(217, 33%, 17%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(222, 84%, 5%);
+  --secondary: hsl(217, 33%, 17%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(217, 33%, 17%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(217, 91%, 60%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+}
+
+@layer utilities {
+  .cyber-dark {
+    background-color: var(--cyber-dark);
+  }
+  
+  .cyber-gray {
+    background-color: var(--cyber-gray);
+  }
+  
+  .cyber-blue {
+    color: var(--cyber-blue);
+  }
+  
+  .cyber-green {
+    color: var(--cyber-green);
+  }
+  
+  .cyber-amber {
+    color: var(--cyber-amber);
+  }
+  
+  .cyber-red {
+    color: var(--cyber-red);
+  }
+  
+  .bg-cyber-dark {
+    background-color: var(--cyber-dark);
+  }
+  
+  .bg-cyber-gray {
+    background-color: var(--cyber-gray);
+  }
+  
+  .bg-cyber-blue {
+    background-color: var(--cyber-blue);
+  }
+  
+  .bg-cyber-green {
+    background-color: var(--cyber-green);
+  }
+  
+  .bg-cyber-amber {
+    background-color: var(--cyber-amber);
+  }
+  
+  .bg-cyber-red {
+    background-color: var(--cyber-red);
+  }
+  
+  .text-cyber-dark {
+    color: var(--cyber-dark);
+  }
+  
+  .text-cyber-gray {
+    color: var(--cyber-gray);
+  }
+  
+  .text-cyber-blue {
+    color: var(--cyber-blue);
+  }
+  
+  .text-cyber-green {
+    color: var(--cyber-green);
+  }
+  
+  .text-cyber-amber {
+    color: var(--cyber-amber);
+  }
+  
+  .text-cyber-red {
+    color: var(--cyber-red);
+  }
+  
+  .border-cyber-blue {
+    border-color: var(--cyber-blue);
+  }
+  
+  .border-cyber-green {
+    border-color: var(--cyber-green);
+  }
+  
+  .border-cyber-amber {
+    border-color: var(--cyber-amber);
+  }
+  
+  .border-cyber-red {
+    border-color: var(--cyber-red);
+  }
+}
+
+/* Leaflet map custom styles */
+.leaflet-container {
+  background-color: var(--cyber-dark) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: var(--cyber-gray) !important;
+  color: white !important;
+}
+
+.leaflet-popup-tip {
+  background-color: var(--cyber-gray) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--cyber-gray) !important;
+  color: white !important;
+  border: 1px solid hsl(217, 33%, 30%) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--cyber-blue) !important;
+}
+
+.leaflet-control-attribution {
+  background-color: var(--cyber-gray) !important;
+  color: hsl(215, 20%, 65%) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--cyber-blue) !important;
+}
