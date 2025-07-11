@@ -53,12 +53,12 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cyber-dark flex">
+    <div className="min-h-screen bg-gradient-to-br from-[#0d1117] via-[#0f172a] to-[#1e293b] flex">
       {/* Left Side - Forms */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="flex items-center justify-center mb-8">
-            <div className="w-12 h-12 bg-cyber-blue rounded-lg flex items-center justify-center mr-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mr-3">
               <Shield className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -68,17 +68,17 @@ export default function AuthPage() {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-cyber-gray">
-              <TabsTrigger value="login" className="data-[state=active]:bg-cyber-blue">
+            <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50">
+              <TabsTrigger value="login" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white">
                 Login
               </TabsTrigger>
-              <TabsTrigger value="register" className="data-[state=active]:bg-cyber-blue">
+              <TabsTrigger value="register" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white">
                 Register
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="login">
-              <Card className="bg-cyber-gray border-slate-700">
+              <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50">
                 <CardHeader>
                   <CardTitle className="text-white">Welcome back</CardTitle>
                   <CardDescription className="text-slate-400">
@@ -95,7 +95,7 @@ export default function AuthPage() {
                         id="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="bg-cyber-dark border-slate-600 text-white placeholder-slate-400"
+                        className="bg-slate-900/50 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400"
                         {...loginForm.register("email")}
                       />
                       {loginForm.formState.errors.email && (
@@ -114,7 +114,7 @@ export default function AuthPage() {
                           id="password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
-                          className="bg-cyber-dark border-slate-600 text-white placeholder-slate-400 pr-10"
+                          className="bg-slate-900/50 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 pr-10"
                           {...loginForm.register("password")}
                         />
                         <button
@@ -134,7 +134,7 @@ export default function AuthPage() {
 
                     <Button
                       type="submit"
-                      className="w-full bg-cyber-blue hover:bg-blue-600"
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
                       disabled={loginMutation.isPending}
                     >
                       {loginMutation.isPending ? (
@@ -155,7 +155,7 @@ export default function AuthPage() {
             </TabsContent>
 
             <TabsContent value="register">
-              <Card className="bg-cyber-gray border-slate-700">
+              <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50">
                 <CardHeader>
                   <CardTitle className="text-white">Create Account</CardTitle>
                   <CardDescription className="text-slate-400">
@@ -172,7 +172,7 @@ export default function AuthPage() {
                         id="register-email"
                         type="email"
                         placeholder="Enter your email"
-                        className="bg-cyber-dark border-slate-600 text-white placeholder-slate-400"
+                        className="bg-slate-900/50 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400"
                         {...registerForm.register("email")}
                       />
                       {registerForm.formState.errors.email && (
@@ -191,7 +191,7 @@ export default function AuthPage() {
                           id="register-password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Create a password"
-                          className="bg-cyber-dark border-slate-600 text-white placeholder-slate-400 pr-10"
+                          className="bg-slate-900/50 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 pr-10"
                           {...registerForm.register("password")}
                         />
                         <button
@@ -211,7 +211,7 @@ export default function AuthPage() {
 
                     <Button
                       type="submit"
-                      className="w-full bg-cyber-blue hover:bg-blue-600"
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
                       disabled={registerMutation.isPending}
                     >
                       {registerMutation.isPending ? (
@@ -235,28 +235,32 @@ export default function AuthPage() {
       </div>
 
       {/* Right Side - Hero Section */}
-      <div className="flex-1 bg-cyber-gray flex items-center justify-center p-8">
-        <div className="max-w-md text-center">
-          <div className="w-20 h-20 bg-cyber-blue/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Shield className="h-10 w-10 text-cyber-blue" />
+      <div className="flex-1 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm flex items-center justify-center p-8 relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-50"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)]"></div>
+        
+        <div className="relative max-w-md text-center z-10">
+          <div className="w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-blue-400/30">
+            <Shield className="h-10 w-10 text-blue-400" />
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">
             Advanced Threat Intelligence
           </h2>
-          <p className="text-slate-400 mb-6">
+          <p className="text-slate-300 mb-6">
             Track suspicious actors with precision geolocation, browser fingerprinting, and real-time intelligence gathering.
           </p>
           <div className="space-y-3 text-sm text-slate-300">
             <div className="flex items-center justify-center">
-              <div className="w-2 h-2 bg-cyber-green rounded-full mr-2"></div>
+              <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
               Secure link generation
             </div>
             <div className="flex items-center justify-center">
-              <div className="w-2 h-2 bg-cyber-blue rounded-full mr-2"></div>
+              <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
               Real-time geolocation tracking
             </div>
             <div className="flex items-center justify-center">
-              <div className="w-2 h-2 bg-cyber-amber rounded-full mr-2"></div>
+              <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
               Advanced analytics dashboard
             </div>
           </div>

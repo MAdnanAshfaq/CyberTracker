@@ -103,12 +103,12 @@ export default function Dashboard() {
   const recentEvents = clickEvents?.slice(0, 5) || [];
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-slate-50 flex">
+    <div className="min-h-screen bg-gradient-to-br from-[#0d1117] via-[#0f172a] to-[#1e293b] text-slate-50 flex">
       <Sidebar />
       
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-cyber-gray border-b border-slate-700 px-8 py-4">
+        <header className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/50 px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white">Intelligence Dashboard</h2>
@@ -116,10 +116,10 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm text-slate-400">
-                <div className="w-2 h-2 bg-cyber-green rounded-full"></div>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>System Online</span>
               </div>
-              <Button className="bg-cyber-blue hover:bg-blue-600">
+              <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
                 <Plus className="mr-2 h-4 w-4" />
                 Create Link
               </Button>
@@ -131,7 +131,7 @@ export default function Dashboard() {
         <main className="flex-1 p-8 overflow-auto">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <Card className="bg-cyber-gray border-slate-700">
+            <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -140,19 +140,19 @@ export default function Dashboard() {
                       {statsLoading ? "..." : stats?.totalLinks || 0}
                     </p>
                   </div>
-                  <div className="w-12 h-12 bg-cyber-blue/20 rounded-lg flex items-center justify-center">
-                    <Link className="h-6 w-6 text-cyber-blue" />
+                  <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                    <Link className="h-6 w-6 text-blue-400" />
                   </div>
                 </div>
                 <div className="mt-4 flex items-center text-sm">
-                  <TrendingUp className="h-4 w-4 text-cyber-green mr-1" />
-                  <span className="text-cyber-green">+12.5%</span>
+                  <TrendingUp className="h-4 w-4 text-green-400 mr-1" />
+                  <span className="text-green-400">+12.5%</span>
                   <span className="text-slate-400 ml-1">from last month</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-cyber-gray border-slate-700">
+            <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -161,19 +161,19 @@ export default function Dashboard() {
                       {statsLoading ? "..." : stats?.activeLinks || 0}
                     </p>
                   </div>
-                  <div className="w-12 h-12 bg-cyber-amber/20 rounded-lg flex items-center justify-center">
-                    <Target className="h-6 w-6 text-cyber-amber" />
+                  <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                    <Target className="h-6 w-6 text-yellow-400" />
                   </div>
                 </div>
                 <div className="mt-4 flex items-center text-sm">
-                  <TrendingUp className="h-4 w-4 text-cyber-green mr-1" />
-                  <span className="text-cyber-green">+8.2%</span>
+                  <TrendingUp className="h-4 w-4 text-green-400 mr-1" />
+                  <span className="text-green-400">+8.2%</span>
                   <span className="text-slate-400 ml-1">from last week</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-cyber-gray border-slate-700">
+            <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -182,24 +182,24 @@ export default function Dashboard() {
                       {statsLoading ? "..." : stats?.totalClicks || 0}
                     </p>
                   </div>
-                  <div className="w-12 h-12 bg-cyber-green/20 rounded-lg flex items-center justify-center">
-                    <MousePointer className="h-6 w-6 text-cyber-green" />
+                  <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                    <MousePointer className="h-6 w-6 text-green-400" />
                   </div>
                 </div>
                 <div className="mt-4 flex items-center text-sm">
-                  <TrendingUp className="h-4 w-4 text-cyber-green mr-1" />
-                  <span className="text-cyber-green">+23.1%</span>
+                  <TrendingUp className="h-4 w-4 text-green-400 mr-1" />
+                  <span className="text-green-400">+23.1%</span>
                   <span className="text-slate-400 ml-1">from last month</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-cyber-gray border-slate-700">
+            <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-slate-400 text-sm">Threat Score</p>
-                    <p className="text-2xl font-bold text-cyber-red">
+                    <p className="text-2xl font-bold text-red-400">
                       {statsLoading ? "..." : stats?.threatScore || "Low"}
                     </p>
                   </div>
