@@ -20,11 +20,11 @@ export interface IStorage {
   getClickEventsByShortlink(shortlinkId: number): Promise<ClickEvent[]>;
   getClickEventsByUser(userId: number): Promise<ClickEvent[]>;
   
-  sessionStore: session.SessionStore;
+  sessionStore: any;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: any;
 
   constructor() {
     const PostgresSessionStore = connectPg(session);
@@ -89,7 +89,7 @@ export class DatabaseStorage implements IStorage {
     const result = await db
       .delete(shortlinks)
       .where(eq(shortlinks.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   async createClickEvent(insertClickEvent: InsertClickEvent): Promise<ClickEvent> {

@@ -1,0 +1,70 @@
+You are a senior frontend developer and designer. Build a dark, elegant, futuristic SaaS landing page for a cybersecurity platform called **TraceIntel**. Use React and TailwindCSS. 
+
+🎯 Design Inspiration:
+Recreate the landing page layout and style based on the design of the app "Cobalt" (see screenshot provided). Follow its sections, fonts, structure, and color palette closely — deep navy backgrounds, glowing gradients, clean sans-serif typography, bold headlines, sharp icons, modern graphs, and well-padded sections.
+
+---
+
+📄 Landing Page Sections:
+
+1. **Hero Section**
+- Headline: “Track with precision. Investigate with confidence.”
+- Subheadline: "TraceIntel helps you track, trace, and visualize potential threats, fraudsters, and digital intrusions with pinpoint geolocation and device intel."
+- Primary CTA: “Join the Beta” button
+- Secondary CTA: “See How It Works”
+- Background: animated star grid or subtle dark gradient
+- Responsive layout with full-screen width
+
+2. **Interactive Dashboard Preview**
+- Mock image of the TraceIntel dashboard (placeholder or component screenshot)
+- Label sections like “Insights”, “Traces”, “Location Map”
+- Display a live chart or placeholder chart to simulate interactivity
+
+3. **Feature Sections (3 columns)**
+- Feature #1: “Intelligence at Your Fingertips” — access precise device metadata instantly.
+- Feature #2: “Real-time Geolocation” — get user-permitted GPS-level tracking when links are clicked.
+- Feature #3: “Legal + Ethical” — trace within licensed boundaries with user consent.
+
+4. **App Integrations Grid**
+- Title: “Connect with your stack”
+- Show dummy logos (e.g., Discord, Slack, Email, Notion, Stripe) to imply integrations
+- Grid style, minimal glowing hover effects
+
+5. **AI Assistant Section (Like ‘Meet Genius’)**
+- Headline: “Meet TraceAI”
+- Subtext: “Your built-in AI analyst for link activity, location movement patterns, and anomaly detection.”
+- Add a fake chat interface or simple interaction mockup (input + suggestions)
+
+6. **CTA Footer**
+- Title: “Ready to Trace Smarter?”
+- Button: “Join the Beta” or “Get Started”
+- Add privacy policy + terms footer below
+
+---
+
+🛠️ Tech Stack:
+- React + TailwindCSS
+- Use responsive layout via Tailwind grid/flex
+- Use `react-icons` or SVGs for section icons
+- Include placeholder images or components where mockups are needed
+- No backend functionality yet — static content and interactive feel only
+
+---
+
+🎨 Tailwind Theming Tips:
+- Use `bg-gradient-to-b from-[#0d1117] via-[#0f172a] to-[#1e293b]`
+- Text: slate-100, slate-400
+- Buttons: glassmorphism / glowing borders
+- Headline Font: use `font-extrabold text-5xl md:text-6xl`
+- Add light animation to background stars or grid (optional)
+
+---
+
+📦 Output Requirements:
+- One-page responsive React layout
+- Beautiful scrollable dark theme
+- Modern typography and spacing
+- Tailwind-based responsiveness
+- Clean code organization in `components` folder (Hero.jsx, Features.jsx, Footer.jsx, etc.)
+
+Now begin designing the full landing page. Start with `LandingPage.jsx` and import all components. Do not add database or auth yet — this is a pure marketing-facing first impression page.

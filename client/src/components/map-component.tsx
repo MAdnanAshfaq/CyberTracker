@@ -10,7 +10,7 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
   const mapInstanceRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || !(window as any).L) return;
 
     // Initialize map
     const map = (window as any).L.map(mapRef.current, {

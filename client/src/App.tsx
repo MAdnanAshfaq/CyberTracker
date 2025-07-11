@@ -8,11 +8,13 @@ import { ProtectedRoute } from "@/lib/protected-route";
 import Dashboard from "@/pages/dashboard";
 import AuthPage from "@/pages/auth-page";
 import TrackingPage from "@/pages/tracking-page";
+import LandingPage from "@/pages/landing-page";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
+      <Route path="/landing" component={LandingPage} />
       <ProtectedRoute path="/" component={Dashboard} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/s/:slug" component={TrackingPage} />
