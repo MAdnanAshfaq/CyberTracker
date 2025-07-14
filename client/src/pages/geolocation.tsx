@@ -4,17 +4,21 @@ import { type ClickEvent } from "@shared/schema";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sidebar } from "@/components/sidebar";
 import { MapComponent } from "@/components/map-component";
+import { useState, useRef } from "react";
 import { 
   MapPin, 
   Globe, 
   Users, 
   Clock,
   Shield,
-  AlertTriangle
+  AlertTriangle,
+  MousePointer
 } from "lucide-react";
 
 export default function GeolocationPage() {
   const { user } = useAuth();
+  const [focusedEvent, setFocusedEvent] = useState<ClickEvent | null>(null);
+  const mapRef = useRef<any>(null);
 
   const { data: clickEvents, isLoading: clicksLoading } = useQuery<ClickEvent[]>({
     queryKey: ["/api/clicks"],
@@ -23,6 +27,15 @@ export default function GeolocationPage() {
   const recentEvents = clickEvents?.slice(0, 10) || [];
   const uniqueCountries = [...new Set(clickEvents?.map(e => e.country).filter(Boolean))];
   const uniqueCities = [...new Set(clickEvents?.map(e => e.city).filter(Boolean))];
+
+  const handleEventClick = (event: ClickEvent) => {
+    if (event.latitude && event.longitude) {
+      setFocusedEvent(event);
+      if (mapRef.current) {
+        mapRef.current.focusOnLocation(event.latitude, event.longitude);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0d1117] via-[#0f172a] to-[#1e293b] text-slate-50 flex">
@@ -127,7 +140,11 @@ export default function GeolocationPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <MapComponent clickEvents={clickEvents || []} />
+                    <MapComponent 
+                      ref={mapRef}
+                      clickEvents={clickEvents || []} 
+                      focusedEvent={focusedEvent}
+                    />
                   </CardContent>
                 </Card>
               </div>
@@ -159,12 +176,15 @@ export default function GeolocationPage() {
                         {recentEvents.map((event) => (
                           <div
                             key={event.id}
-                            className="bg-slate-900/50 rounded-lg p-3 border border-slate-700/50"
+                            onClick={() => handleEventClick(event)}
+                            className={`bg-slate-900/50 rounded-lg p-3 border transition-all duration-200 cursor-pointer hover:bg-slate-800/70 hover:border-blue-500/50 ${
+                              focusedEvent?.id === event.id ? 'border-blue-500 bg-slate-800/70' : 'border-slate-700/50'
+                            }`}
                           >
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
                                 <div className="flex items-center space-x-2">
-                                  <MapPin className="h-4 w-4 text-blue-400" />
+                                  <MousePointer className="h-4 w-4 text-blue-400" />
                                   <span className="text-sm font-medium text-white">
                                     {event.city || "Unknown City"}
                                   </span>
@@ -172,18 +192,63 @@ export default function GeolocationPage() {
                                 <p className="text-xs text-slate-400 mt-1">
                                   {event.country || "Unknown Country"}
                                 </p>
-                                <p className="text-xs text-slate-500 mt-1">
-                                  IP: {event.ipAddress || "Unknown"}
-                                </p>
-                                <p className="text-xs text-slate-500">
-                                  {event.timestamp ? new Date(event.timestamp).toLocaleString() : "Unknown time"}
-                                </p>
+                                <div className="mt-2 space-y-1">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-xs text-slate-500">IP:</span>
+                                    <span className="text-xs text-slate-300 font-mono">
+                                      {event.ipAddress || "Unknown"}
+                                    </span>
+                                  </div>
+                                  {event.browser && (
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs text-slate-500">Browser:</span>
+                                      <span className="text-xs text-slate-300">
+                                        {event.browser}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {event.os && (
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs text-slate-500">OS:</span>
+                                      <span className="text-xs text-slate-300">
+                                        {event.os}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {event.isp && (
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs text-slate-500">ISP:</span>
+                                      <span className="text-xs text-slate-300">
+                                        {event.isp}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {event.deviceModel && (
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs text-slate-500">Device:</span>
+                                      <span className="text-xs text-slate-300">
+                                        {event.deviceModel}
+                                      </span>
+                                    </div>
+                                  )}
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-xs text-slate-500">Time:</span>
+                                    <span className="text-xs text-slate-300">
+                                      {event.timestamp ? new Date(event.timestamp).toLocaleString() : "Unknown"}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="flex items-center">
+                              <div className="flex flex-col items-center space-y-2">
                                 {event.latitude && event.longitude ? (
                                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                                 ) : (
                                   <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                )}
+                                {focusedEvent?.id === event.id && (
+                                  <div className="text-xs text-blue-400 font-medium">
+                                    Focused
+                                  </div>
                                 )}
                               </div>
                             </div>

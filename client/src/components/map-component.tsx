@@ -55,7 +55,7 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
           initMap();
         }
       }, 100);
-      
+
       // Clean up interval after 10 seconds
       setTimeout(() => clearInterval(checkLeaflet), 10000);
     }
@@ -114,7 +114,7 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
         const marker = window.L.marker([event.latitude, event.longitude], {
           icon: redIcon
         }).addTo(mapInstanceRef.current);
-        
+
         const popupContent = `
           <div style="color: #000; font-size: 12px; font-family: 'Inter', sans-serif; min-width: 200px;">
             <strong style="font-size: 14px;">${event.city || 'Unknown Location'}</strong><br>
@@ -140,7 +140,7 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
     if (markersRef.current.length > 0) {
       const group = new window.L.featureGroup(markersRef.current);
       mapInstanceRef.current.fitBounds(group.getBounds().pad(0.1));
-      
+
       // Prevent over-zooming for single markers
       if (markersRef.current.length === 1) {
         mapInstanceRef.current.setZoom(Math.min(mapInstanceRef.current.getZoom(), 15));
@@ -172,3 +172,5 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
     />
   );
 }
+
+MapComponent.displayName = 'MapComponent';

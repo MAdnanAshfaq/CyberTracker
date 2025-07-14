@@ -95,25 +95,101 @@ export function registerRoutes(app: Express): Server {
           </div>
           <script>
             (async function() {
+              // Parse user agent for detailed info
+              function parseUserAgent(ua) {
+                const result = {
+                  browser: 'Unknown',
+                  os: 'Unknown',
+                  deviceModel: 'Unknown',
+                  deviceType: 'Unknown',
+                  androidVersion: null
+                };
+
+                // Browser detection
+                if (ua.includes('Chrome/') && !ua.includes('Edg/')) {
+                  const chromeMatch = ua.match(/Chrome\\/([\\d.]+)/);
+                  result.browser = chromeMatch ? 'Chrome ' + chromeMatch[1] : 'Chrome';
+                } else if (ua.includes('Firefox/')) {
+                  const firefoxMatch = ua.match(/Firefox\\/([\\d.]+)/);
+                  result.browser = firefoxMatch ? 'Firefox ' + firefoxMatch[1] : 'Firefox';
+                } else if (ua.includes('Safari/') && !ua.includes('Chrome/')) {
+                  const safariMatch = ua.match(/Version\\/([\\d.]+)/);
+                  result.browser = safariMatch ? 'Safari ' + safariMatch[1] : 'Safari';
+                } else if (ua.includes('Edg/')) {
+                  const edgeMatch = ua.match(/Edg\\/([\\d.]+)/);
+                  result.browser = edgeMatch ? 'Edge ' + edgeMatch[1] : 'Edge';
+                }
+
+                // OS detection
+                if (ua.includes('Windows NT')) {
+                  const winMatch = ua.match(/Windows NT ([\\d.]+)/);
+                  result.os = winMatch ? 'Windows ' + winMatch[1] : 'Windows';
+                } else if (ua.includes('Mac OS X')) {
+                  const macMatch = ua.match(/Mac OS X ([\\d_]+)/);
+                  result.os = macMatch ? 'macOS ' + macMatch[1].replace(/_/g, '.') : 'macOS';
+                } else if (ua.includes('Linux')) {
+                  result.os = 'Linux';
+                } else if (ua.includes('Android')) {
+                  const androidMatch = ua.match(/Android ([\\d.]+)/);
+                  result.os = androidMatch ? 'Android ' + androidMatch[1] : 'Android';
+                  result.androidVersion = androidMatch ? androidMatch[1] : null;
+                } else if (ua.includes('iPhone OS') || ua.includes('iOS')) {
+                  const iosMatch = ua.match(/OS ([\\d_]+)/);
+                  result.os = iosMatch ? 'iOS ' + iosMatch[1].replace(/_/g, '.') : 'iOS';
+                }
+
+                // Device detection
+                if (ua.includes('Mobile') || ua.includes('Android')) {
+                  result.deviceType = 'Mobile';
+                } else if (ua.includes('Tablet') || ua.includes('iPad')) {
+                  result.deviceType = 'Tablet';
+                } else {
+                  result.deviceType = 'Desktop';
+                }
+
+                // Device model for mobile
+                if (ua.includes('Android')) {
+                  const modelMatch = ua.match(/\\) ([^;]+);/);
+                  if (modelMatch) {
+                    result.deviceModel = modelMatch[1];
+                  }
+                } else if (ua.includes('iPhone')) {
+                  result.deviceModel = 'iPhone';
+                } else if (ua.includes('iPad')) {
+                  result.deviceModel = 'iPad';
+                }
+
+                return result;
+              }
+
+              const userAgentInfo = parseUserAgent(navigator.userAgent);
+              
               const data = {
                 shortlinkId: ${shortlink.id},
                 userAgent: navigator.userAgent,
                 language: navigator.language,
-                screenResolution: screen.width + 'x' + screen.height
+                screenResolution: screen.width + 'x' + screen.height,
+                browser: userAgentInfo.browser,
+                os: userAgentInfo.os,
+                deviceModel: userAgentInfo.deviceModel,
+                deviceType: userAgentInfo.deviceType,
+                androidVersion: userAgentInfo.androidVersion,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
               };
 
-              // Try to get IP and location info
+              // Try to get IP and location info with enhanced data
               try {
                 const ipResponse = await fetch('https://ipapi.co/json/');
                 const ipData = await ipResponse.json();
                 data.ipAddress = ipData.ip;
                 data.country = ipData.country_name;
                 data.city = ipData.city;
+                data.isp = ipData.org || ipData.isp;
               } catch (e) {
                 console.log('Could not get IP info');
               }
 
-              // Try to get geolocation
+              // Try to get precise geolocation
               if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                   async (position) => {
@@ -124,6 +200,11 @@ export function registerRoutes(app: Express): Server {
                   async (error) => {
                     console.log('Geolocation denied or failed');
                     await sendData(data);
+                  },
+                  {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
                   }
                 );
               } else {

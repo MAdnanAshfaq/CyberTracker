@@ -66,9 +66,24 @@ export const insertShortlinkSchema = createInsertSchema(shortlinks).omit({
   createdAt: true,
 });
 
-export const insertClickEventSchema = createInsertSchema(clickEvents).omit({
-  id: true,
-  timestamp: true,
+export const insertClickEventSchema = z.object({
+  shortlinkId: z.number(),
+  timestamp: z.string().datetime().optional(),
+  ipAddress: z.string().optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  userAgent: z.string().optional(),
+  browser: z.string().optional(),
+  os: z.string().optional(),
+  screenResolution: z.string().optional(),
+  language: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  isp: z.string().optional(),
+  deviceModel: z.string().optional(),
+  deviceType: z.string().optional(),
+  androidVersion: z.string().optional(),
+  timezone: z.string().optional(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -76,4 +91,25 @@ export type User = typeof users.$inferSelect;
 export type InsertShortlink = z.infer<typeof insertShortlinkSchema>;
 export type Shortlink = typeof shortlinks.$inferSelect;
 export type InsertClickEvent = z.infer<typeof insertClickEventSchema>;
-export type ClickEvent = typeof clickEvents.$inferSelect;
+export type ClickEvent = z.infer<typeof clickEventSchema>;
+
+export const clickEventSchema = z.object({
+  id: z.number(),
+  shortlinkId: z.number(),
+  timestamp: z.string(),
+  ipAddress: z.string().nullable(),
+  latitude: z.number().nullable(),
+  longitude: z.number().nullable(),
+  userAgent: z.string().nullable(),
+  browser: z.string().nullable(),
+  os: z.string().nullable(),
+  screenResolution: z.string().nullable(),
+  language: z.string().nullable(),
+  country: z.string().nullable(),
+  city: z.string().nullable(),
+  isp: z.string().nullable(),
+  deviceModel: z.string().nullable(),
+  deviceType: z.string().nullable(),
+  androidVersion: z.string().nullable(),
+  timezone: z.string().nullable(),
+});
