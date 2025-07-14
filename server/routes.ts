@@ -157,11 +157,14 @@ export function registerRoutes(app: Express): Server {
   // Track click event
   app.post("/api/track", async (req, res, next) => {
     try {
+      console.log("Tracking data received:", req.body);
       const validatedData = insertClickEventSchema.parse(req.body);
       
-      await storage.createClickEvent(validatedData);
+      const clickEvent = await storage.createClickEvent(validatedData);
+      console.log("Click event created:", clickEvent);
       res.status(201).json({ success: true });
     } catch (error) {
+      console.error("Tracking error:", error);
       next(error);
     }
   });

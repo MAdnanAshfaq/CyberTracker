@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 import { 
   Shield, 
   BarChart3, 
@@ -13,17 +14,20 @@ import {
 
 export function Sidebar() {
   const { user, logoutMutation } = useAuth();
+  const [location, navigate] = useLocation();
 
   const handleLogout = () => {
     logoutMutation.mutate();
   };
 
+  const isActive = (path: string) => location === path;
+
   return (
-    <div className="w-64 bg-cyber-gray border-r border-slate-700 flex flex-col">
+    <div className="w-64 bg-slate-800/50 backdrop-blur-sm border-r border-slate-700/50 flex flex-col">
       {/* Brand Header */}
-      <div className="p-6 border-b border-slate-700">
+      <div className="p-6 border-b border-slate-700/50">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-cyber-blue rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
             <Shield className="h-5 w-5 text-white" />
           </div>
           <div>
@@ -37,7 +41,12 @@ export function Sidebar() {
       <nav className="flex-1 p-4 space-y-2">
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-white bg-cyber-blue hover:bg-blue-600"
+          className={`w-full justify-start ${
+            isActive('/') 
+              ? 'text-white bg-gradient-to-r from-blue-500/30 to-blue-600/30 border-r-2 border-blue-400' 
+              : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+          }`}
+          onClick={() => navigate('/')}
         >
           <BarChart3 className="mr-3 h-4 w-4" />
           Dashboard
@@ -45,7 +54,12 @@ export function Sidebar() {
         
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-slate-300 hover:bg-slate-700 hover:text-white"
+          className={`w-full justify-start ${
+            isActive('/tracking-links') 
+              ? 'text-white bg-gradient-to-r from-blue-500/30 to-blue-600/30 border-r-2 border-blue-400' 
+              : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+          }`}
+          onClick={() => navigate('/tracking-links')}
         >
           <Link className="mr-3 h-4 w-4" />
           Tracking Links
@@ -53,7 +67,12 @@ export function Sidebar() {
         
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-slate-300 hover:bg-slate-700 hover:text-white"
+          className={`w-full justify-start ${
+            isActive('/geolocation') 
+              ? 'text-white bg-gradient-to-r from-blue-500/30 to-blue-600/30 border-r-2 border-blue-400' 
+              : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+          }`}
+          onClick={() => navigate('/geolocation')}
         >
           <MapPin className="mr-3 h-4 w-4" />
           Geolocation
@@ -61,7 +80,12 @@ export function Sidebar() {
         
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-slate-300 hover:bg-slate-700 hover:text-white"
+          className={`w-full justify-start ${
+            isActive('/analytics') 
+              ? 'text-white bg-gradient-to-r from-blue-500/30 to-blue-600/30 border-r-2 border-blue-400' 
+              : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+          }`}
+          onClick={() => navigate('/analytics')}
         >
           <TrendingUp className="mr-3 h-4 w-4" />
           Analytics
@@ -69,7 +93,12 @@ export function Sidebar() {
         
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-slate-300 hover:bg-slate-700 hover:text-white"
+          className={`w-full justify-start ${
+            isActive('/settings') 
+              ? 'text-white bg-gradient-to-r from-blue-500/30 to-blue-600/30 border-r-2 border-blue-400' 
+              : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+          }`}
+          onClick={() => navigate('/settings')}
         >
           <Settings className="mr-3 h-4 w-4" />
           Settings
@@ -77,9 +106,9 @@ export function Sidebar() {
       </nav>
 
       {/* User Profile */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t border-slate-700/50">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-slate-600 rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center">
             <User className="h-5 w-5 text-slate-300" />
           </div>
           <div className="flex-1">

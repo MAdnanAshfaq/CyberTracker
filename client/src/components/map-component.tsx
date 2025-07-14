@@ -21,6 +21,12 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
     const initMap = () => {
       if (!mapRef.current || !window.L) return;
 
+      // Clean up existing map instance
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+
       // Initialize Leaflet map
       const map = window.L.map(mapRef.current, {
         center: [40.7128, -74.0060],
@@ -67,8 +73,8 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
 
     // Clear existing markers
     markersRef.current.forEach(marker => {
-      if (marker.removeFrom) {
-        marker.removeFrom(mapInstanceRef.current);
+      if (marker.remove) {
+        marker.remove();
       }
     });
     markersRef.current = [];
