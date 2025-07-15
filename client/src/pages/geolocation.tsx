@@ -14,6 +14,7 @@ import {
   AlertTriangle,
   MousePointer
 } from "lucide-react";
+import { Chatbot } from "@/components/chatbot";
 
 export default function GeolocationPage() {
   const { user } = useAuth();
@@ -273,6 +274,7 @@ export default function GeolocationPage() {
           </div>
         </main>
       </div>
+      <Chatbot />
     </div>
   );
 }

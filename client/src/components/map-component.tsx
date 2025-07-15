@@ -116,7 +116,7 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
         }).addTo(mapInstanceRef.current);
 
         const popupContent = `
-          <div style="color: #000; font-size: 12px; font-family: 'Inter', sans-serif; min-width: 200px;">
+          <div style="color: #000; font-size: 12px; font-family: 'Inter', sans-serif; min-width: 220px;">
             <strong style="font-size: 14px;">${event.city || 'Unknown Location'}</strong><br>
             <hr style="margin: 6px 0; border: 0; border-top: 1px solid #e5e7eb;">
             <div style="margin: 4px 0;"><strong>IP:</strong> <code style="background: #f3f4f6; padding: 2px 4px; border-radius: 3px;">${event.ipAddress || 'Unknown'}</code></div>
@@ -124,6 +124,23 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
             <div style="margin: 4px 0;"><strong>Coordinates:</strong> ${event.latitude.toFixed(4)}, ${event.longitude.toFixed(4)}</div>
             <div style="margin: 4px 0;"><strong>Browser:</strong> ${event.userAgent?.split(' ')[0] || 'Unknown'}</div>
             <div style="margin: 4px 0;"><strong>Time:</strong> ${event.timestamp ? new Date(event.timestamp).toLocaleString() : 'Unknown'}</div>
+            <hr style="margin: 6px 0; border: 0; border-top: 1px solid #e5e7eb;">
+            <button 
+              onclick="window.open('https://www.google.com/maps?q=${event.latitude},${event.longitude}', '_blank')" 
+              style="
+                width: 100%; 
+                background: #4285f4; 
+                color: white; 
+                border: none; 
+                padding: 8px 12px; 
+                border-radius: 4px; 
+                cursor: pointer; 
+                font-size: 12px;
+                margin-top: 4px;
+              "
+            >
+              🗺️ Open in Google Maps
+            </button>
           </div>
         `;
 

@@ -11,12 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sidebar } from "@/components/sidebar";
 import { MapComponent } from "@/components/map-component";
-import { 
-  Shield, 
-  Plus, 
-  Link, 
-  Target, 
-  MousePointer, 
+import {
+  Shield,
+  Plus,
+  Link,
+  Target,
+  MousePointer,
   AlertTriangle,
   TrendingUp,
   Eye,
@@ -27,6 +27,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { Chatbot } from "@/components/chatbot"; // Added Chatbot import
+import { ContactForm } from "@/components/contact-form"; // Added ContactForm import
 
 const createLinkSchema = insertShortlinkSchema.omit({ userId: true, slug: true });
 
@@ -105,7 +107,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0d1117] via-[#0f172a] to-[#1e293b] text-slate-50 flex">
       <Sidebar />
-      
+
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/50 px-8 py-4">
@@ -304,7 +306,7 @@ export default function Dashboard() {
                           <div className="w-2 h-2 bg-cyber-green rounded-full"></div>
                           <div className="flex-1">
                             <p className="text-sm text-white">
-                              Link clicked from IP: 
+                              Link clicked from IP:
                               <span className="font-mono text-cyber-blue ml-1">
                                 {event.ipAddress || "Unknown"}
                               </span>
@@ -379,7 +381,7 @@ export default function Dashboard() {
                           shortlinks.map((link) => {
                             const clickCount = clickEvents?.filter(c => c.shortlinkId === link.id).length || 0;
                             const shortUrl = `${window.location.origin}/s/${link.slug}`;
-                            
+
                             return (
                               <tr key={link.id} className="border-b border-slate-700 hover:bg-cyber-dark/50">
                                 <td className="py-4 text-white">
@@ -396,11 +398,10 @@ export default function Dashboard() {
                                   </span>
                                 </td>
                                 <td className="py-4">
-                                  <span className={`px-2 py-1 rounded-full text-xs ${
-                                    link.isActive 
-                                      ? "bg-cyber-green/20 text-cyber-green"
-                                      : "bg-slate-500/20 text-slate-400"
-                                  }`}>
+                                  <span className={`px-2 py-1 rounded-full text-xs ${link.isActive
+                                    ? "bg-cyber-green/20 text-cyber-green"
+                                    : "bg-slate-500/20 text-slate-400"
+                                    }`}>
                                     {link.isActive ? "Active" : "Inactive"}
                                   </span>
                                 </td>
@@ -435,6 +436,31 @@ export default function Dashboard() {
               </Card>
             </div>
           </div>
+          {/* Chatbot */}
+          <Card className="bg-cyber-gray border-slate-700 mt-6">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Edit className="mr-2 h-5 w-5 text-cyber-amber" />
+                Chatbot
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Chatbot />
+            </CardContent>
+          </Card>
+
+          {/* Contact Form */}
+          <Card className="bg-cyber-gray border-slate-700 mt-6">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Edit className="mr-2 h-5 w-5 text-cyber-amber" />
+                Contact Us
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ContactForm />
+            </CardContent>
+          </Card>
         </main>
       </div>
     </div>

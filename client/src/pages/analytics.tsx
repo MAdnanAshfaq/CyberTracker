@@ -13,6 +13,7 @@ import {
   Users,
   MousePointer
 } from "lucide-react";
+import { Chatbot } from "@/components/chatbot";
 
 interface Stats {
   totalLinks: number;
@@ -62,7 +63,7 @@ export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0d1117] via-[#0f172a] to-[#1e293b] text-slate-50 flex">
       <Sidebar />
-      
+
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/50 px-8 py-4">
@@ -339,9 +340,13 @@ export default function AnalyticsPage() {
                 </CardContent>
               </Card>
             </div>
+             {/* Chatbot */}
+             <Chatbot />
           </div>
         </main>
       </div>
     </div>
   );
 }
+```
+Adding the chatbot component to the AnalyticsPage to allow users to inquire about website functionalities.
