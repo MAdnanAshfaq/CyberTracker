@@ -348,5 +348,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-```
-Adding the chatbot component to the AnalyticsPage to allow users to inquire about website functionalities.
