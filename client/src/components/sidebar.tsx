@@ -27,11 +27,9 @@ export function Sidebar() {
       {/* Brand Header */}
       <div className="p-6 border-b border-slate-700/50">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
-            <Shield className="h-5 w-5 text-white" />
-          </div>
+          <img src="/attached_assets/ChatGPT Image Jul 24, 2025, 04_15_44 PM.png" alt="Tracentel Logo" className="w-10 h-10 object-contain" />
           <div>
-            <h1 className="text-xl font-bold text-white">TraceIntel</h1>
+            <h1 className="text-xl font-bold text-white">TRACENTEL</h1>
             <p className="text-xs text-slate-400">Intelligence Platform</p>
           </div>
         </div>
