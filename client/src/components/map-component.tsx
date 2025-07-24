@@ -191,13 +191,16 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
         ref={mapRef} 
         className="w-full h-80 bg-slate-900 rounded-lg border border-slate-600"
       />
+      {/* Move the button below the map */}
       {latestEventWithCoords && (
-        <button
-          onClick={() => window.open(`https://www.google.com/maps?q=${latestEventWithCoords.latitude},${latestEventWithCoords.longitude}`, '_blank')}
-          className="absolute right-4 bottom-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-lg z-10"
-        >
-          Redirect to Google Maps
-        </button>
+        <div className="flex justify-end mt-2">
+          <button
+            onClick={() => window.open(`https://www.google.com/maps?q=${latestEventWithCoords.latitude},${latestEventWithCoords.longitude}`, '_blank')}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-lg"
+          >
+            Redirect to Google Maps
+          </button>
+        </div>
       )}
     </div>
   );
