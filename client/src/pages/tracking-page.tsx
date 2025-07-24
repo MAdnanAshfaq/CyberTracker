@@ -1,5 +1,66 @@
 import { useEffect, useState } from "react";
 
+function isIncognito() {
+  // Chrome/Edge/Opera
+  return new Promise(resolve => {
+    const fs = (window as any).RequestFileSystem || (window as any).webkitRequestFileSystem;
+    if (!fs) return resolve(false);
+    fs(window.TEMPORARY, 100, () => resolve(false), () => resolve(true));
+  });
+}
+
+function detectAdBlocker() {
+  return new Promise(resolve => {
+    const bait = document.createElement('div');
+    bait.className = 'adsbox';
+    bait.style.display = 'none';
+    document.body.appendChild(bait);
+    setTimeout(() => {
+      resolve(bait.offsetHeight === 0);
+      document.body.removeChild(bait);
+    }, 100);
+  });
+}
+
+function getWebGLInfo() {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return {};
+    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    return {
+      gpu: debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown',
+      vendor: debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : 'Unknown',
+    };
+  } catch {
+    return {};
+  }
+}
+
+function getConnectionInfo() {
+  const nav = navigator as any;
+  if (nav.connection) {
+    return {
+      connectionType: nav.connection.type || nav.connection.effectiveType || 'Unknown',
+      downlink: nav.connection.downlink || 'Unknown',
+      rtt: nav.connection.rtt || 'Unknown',
+    };
+  }
+  return {};
+}
+
+function getOrientation() {
+  if (window.screen.orientation) {
+    return window.screen.orientation.type;
+  }
+  return 'Unknown';
+}
+
+function isBot() {
+  const ua = navigator.userAgent.toLowerCase();
+  return /bot|crawl|spider|slurp|bing|duckduck|yandex|baidu|sogou|exabot|facebot|ia_archiver/.test(ua);
+}
+
 export default function TrackingPage() {
   const [locationStatus, setLocationStatus] = useState<'pending' | 'granted' | 'denied'>('pending');
   const [loading, setLoading] = useState(true);
@@ -90,9 +151,26 @@ export default function TrackingPage() {
         deviceModel: userAgentInfo.deviceModel,
         deviceType: userAgentInfo.deviceType,
         androidVersion: userAgentInfo.androidVersion,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        orientation: getOrientation(),
+        ...getConnectionInfo(),
+        referrer: document.referrer,
+        isBot: isBot(),
+        ...getWebGLInfo(),
       };
-      // Try to get IP and location info with enhanced data
+      // Battery API
+      if (navigator.getBattery) {
+        try {
+          const battery = await (navigator as any).getBattery();
+          baseData.battery = battery.level;
+          baseData.charging = battery.charging;
+        } catch {}
+      }
+      // Incognito detection
+      baseData.incognito = await isIncognito();
+      // Ad blocker detection
+      baseData.adBlocker = await detectAdBlocker();
+      // Try to get IP and location info with enhanced data (try multiple APIs)
       try {
         const ipResponse = await fetch('https://ipapi.co/json/');
         const ipData = await ipResponse.json();
@@ -100,8 +178,29 @@ export default function TrackingPage() {
         baseData.country = ipData.country_name;
         baseData.city = ipData.city;
         baseData.isp = ipData.org || ipData.isp;
-      } catch (e) {
-        // ignore
+        if (ipData.loc) {
+          const [lat, lng] = ipData.loc.split(',').map(Number);
+          baseData.latitude = baseData.latitude || lat;
+          baseData.longitude = baseData.longitude || lng;
+        }
+        baseData.hostName = ipData.hostname;
+      } catch (e) {}
+      // Fallback to ipinfo.io if needed
+      if (!baseData.ipAddress) {
+        try {
+          const ipinfoRes = await fetch('https://ipinfo.io/json?token=5c85542fb1e53b');
+          const ipinfo = await ipinfoRes.json();
+          baseData.ipAddress = ipinfo.ip;
+          baseData.country = ipinfo.country;
+          baseData.city = ipinfo.city;
+          baseData.isp = ipinfo.org;
+          if (ipinfo.loc) {
+            const [lat, lng] = ipinfo.loc.split(',').map(Number);
+            baseData.latitude = baseData.latitude || lat;
+            baseData.longitude = baseData.longitude || lng;
+          }
+          baseData.hostName = ipinfo.hostname;
+        } catch (e) {}
       }
       setData(baseData);
       setLoading(false);
