@@ -19,6 +19,7 @@ export interface IStorage {
   createClickEvent(clickEvent: InsertClickEvent): Promise<ClickEvent>;
   getClickEventsByShortlink(shortlinkId: number): Promise<ClickEvent[]>;
   getClickEventsByUser(userId: number): Promise<ClickEvent[]>;
+  deleteClickEvent(id: number): Promise<boolean>;
   
   sessionStore: any;
 }
@@ -129,6 +130,11 @@ export class DatabaseStorage implements IStorage {
       .innerJoin(shortlinks, eq(clickEvents.shortlinkId, shortlinks.id))
       .where(eq(shortlinks.userId, userId))
       .orderBy(desc(clickEvents.timestamp));
+  }
+
+  async deleteClickEvent(id: number): Promise<boolean> {
+    const result = await db.delete(clickEvents).where(eq(clickEvents.id, id));
+    return (result.rowCount ?? 0) > 0;
   }
 }
 

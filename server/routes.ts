@@ -71,6 +71,18 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Delete a click event by ID
+  app.delete("/api/clicks/:id", async (req, res, next) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
+      await storage.deleteClickEvent(id);
+      res.status(204).end();
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // Tracking page route - captures metadata
   app.get("/s/:slug", async (req, res, next) => {
     try {
@@ -269,6 +281,12 @@ export function registerRoutes(app: Express): Server {
       }
       const mergedData = {
         ...clientData,
+        // Fallback logic: use backend geolocation if client data is missing or 'Unknown'
+        ipAddress: clientData.ipAddress && clientData.ipAddress !== 'Unknown' ? clientData.ipAddress : ipInfo.ip,
+        country: clientData.country && clientData.country !== 'Unknown' ? clientData.country : ipInfo.country,
+        city: clientData.city && clientData.city !== 'Unknown' ? clientData.city : ipInfo.city,
+        isp: clientData.isp && clientData.isp !== 'Unknown' ? clientData.isp : ipInfo.org,
+        // Optionally, keep backend fields for debugging
         backendIp: ipInfo.ip,
         backendCountry: ipInfo.country,
         backendCity: ipInfo.city,

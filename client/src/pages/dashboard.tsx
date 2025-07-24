@@ -103,6 +103,11 @@ export default function Dashboard() {
     createLinkMutation.mutate(data);
   };
 
+  const deleteClickEvent = async (id: number) => {
+    await apiRequest("DELETE", `/api/clicks/${id}`);
+    queryClient.invalidateQueries({ queryKey: ["/api/clicks"] });
+  };
+
   const recentEvents = clickEvents?.slice(0, 5) || [];
 
   return (
@@ -308,14 +313,20 @@ export default function Dashboard() {
                           <div className="flex-1">
                             <p className="text-sm text-white">
                               Link clicked from IP:
-                              <span className="font-mono text-cyber-blue ml-1">
-                                {event.ipAddress || "Unknown"}
-                              </span>
+                              <span className="font-mono text-cyber-blue ml-1">{event.ipAddress && event.ipAddress !== 'Unknown' ? event.ipAddress : 'Unknown'}</span>
+                              <br />Location: {event.city && event.city !== 'Unknown' ? event.city : 'Unknown'}, {event.country && event.country !== 'Unknown' ? event.country : 'Unknown'}
                             </p>
                             <p className="text-xs text-slate-400">
                               {event.timestamp ? new Date(event.timestamp).toLocaleString() : "Unknown time"}
                             </p>
                           </div>
+                          <button
+                            className="ml-2 text-red-500 hover:text-red-700"
+                            title="Delete this record"
+                            onClick={() => deleteClickEvent(event.id)}
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
                         </div>
                       ))
                     )}
@@ -399,71 +410,4 @@ export default function Dashboard() {
                                   </span>
                                 </td>
                                 <td className="py-4">
-                                  <span className={`px-2 py-1 rounded-full text-xs ${link.isActive
-                                    ? "bg-cyber-green/20 text-cyber-green"
-                                    : "bg-slate-500/20 text-slate-400"
-                                    }`}>
-                                    {link.isActive ? "Active" : "Inactive"}
-                                  </span>
-                                </td>
-                                <td className="py-4">
-                                  <div className="flex items-center space-x-2">
-                                    <Button
-                                      size="sm"
-                                      variant="ghost"
-                                      className="text-cyber-blue hover:text-blue-400 p-1"
-                                      onClick={() => copyToClipboard(shortUrl)}
-                                    >
-                                      <Copy className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant="ghost"
-                                      className="text-cyber-green hover:text-green-400 p-1"
-                                      onClick={() => window.open(link.targetUrl, '_blank')}
-                                    >
-                                      <ExternalLink className="h-4 w-4" />
-                                    </Button>
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-          {/* Chatbot */}
-          <Card className="bg-cyber-gray border-slate-700 mt-6">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                <Edit className="mr-2 h-5 w-5 text-cyber-amber" />
-                Chatbot
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chatbot />
-            </CardContent>
-          </Card>
-
-          {/* Contact Form */}
-          <Card className="bg-cyber-gray border-slate-700 mt-6">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                <Edit className="mr-2 h-5 w-5 text-cyber-amber" />
-                Contact Us
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ContactForm />
-            </CardContent>
-          </Card>
-        </main>
-      </div>
-    </div>
-  );
-}
+                                  <span className={`
