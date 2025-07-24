@@ -235,17 +235,50 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Endpoint to get targetUrl and shortlinkId for a slug
+  app.get("/api/shortlink-meta/:slug", async (req, res, next) => {
+    try {
+      const shortlink = await storage.getShortlinkBySlug(req.params.slug);
+      if (!shortlink || !shortlink.isActive) {
+        return res.status(404).json({ message: "Not found" });
+      }
+      res.json({ targetUrl: shortlink.targetUrl, shortlinkId: shortlink.id });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // Track click event
   app.post("/api/track", async (req, res, next) => {
     try {
-      console.log("Tracking data received:", req.body);
-      const validatedData = insertClickEventSchema.parse(req.body);
-      
+      // Merge client data with backend IP geolocation
+      const clientData = req.body;
+      let ipInfo: Record<string, any> = {};
+      try {
+        // Use ipinfo.io for backend IP geolocation
+        const ipHeader = req.headers["x-forwarded-for"];
+        const ip = typeof ipHeader === 'string' ? ipHeader.split(",")[0] : req.connection.remoteAddress;
+        const ipinfoRes = await fetch(`https://ipinfo.io/${ip}/json?token=5c85542fb1e53b`);
+        if (ipinfoRes.ok) {
+          ipInfo = await ipinfoRes.json();
+        }
+      } catch (e) {
+        console.log("Could not get backend IP info");
+      }
+      const mergedData = {
+        ...clientData,
+        backendIp: ipInfo.ip,
+        backendCountry: ipInfo.country,
+        backendCity: ipInfo.city,
+        backendRegion: ipInfo.region,
+        backendLoc: ipInfo.loc,
+        backendOrg: ipInfo.org,
+        backendTimezone: ipInfo.timezone
+      };
+      const validatedData = insertClickEventSchema.parse(mergedData);
       const clickEvent = await storage.createClickEvent(validatedData);
-      console.log("Click event created:", clickEvent);
       res.status(201).json({ success: true });
     } catch (error) {
-      console.error("Tracking error:", error);
       next(error);
     }
   });
