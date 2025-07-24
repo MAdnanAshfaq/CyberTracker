@@ -259,6 +259,7 @@ export function registerRoutes(app: Express): Server {
         const ipHeader = req.headers["x-forwarded-for"];
         const ip = typeof ipHeader === 'string' ? ipHeader.split(",")[0] : req.connection.remoteAddress;
         console.log('Backend detected IP:', ip);
+        console.log('All headers:', req.headers);
         const ipinfoRes = await fetch(`https://ipinfo.io/${ip}/json?token=5c85542fb1e53b`);
         if (ipinfoRes.ok) {
           ipInfo = await ipinfoRes.json();

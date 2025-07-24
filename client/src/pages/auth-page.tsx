@@ -45,7 +45,12 @@ export default function AuthPage() {
   };
 
   const handleRegister = (data: RegisterData) => {
-    registerMutation.mutate(data);
+    registerMutation.mutate(data, {
+      onSuccess: () => {
+        // Show a toast or message if you want
+        setLocation("/auth"); // Redirect to sign-in page
+      }
+    });
   };
 
   if (user) {

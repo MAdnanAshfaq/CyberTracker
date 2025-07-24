@@ -65,6 +65,7 @@ export default function Dashboard() {
 
   const { data: clickEvents, isLoading: clicksLoading } = useQuery<ClickEvent[]>({
     queryKey: ["/api/clicks"],
+    refetchInterval: 3000, // Refetch every 3 seconds for live updates
   });
 
   const createLinkMutation = useMutation({
