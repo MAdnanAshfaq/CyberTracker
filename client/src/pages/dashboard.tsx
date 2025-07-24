@@ -410,4 +410,41 @@ export default function Dashboard() {
                                   </span>
                                 </td>
                                 <td className="py-4">
-                                  <span className={`
+                                  <span className={link.isActive ? "bg-cyber-green/20 text-cyber-green px-2 py-1 rounded-full text-xs" : "bg-slate-500/20 text-slate-400 px-2 py-1 rounded-full text-xs"}>
+                                    {link.isActive ? "Active" : "Inactive"}
+                                  </span>
+                                </td>
+                                <td className="py-4">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-cyber-blue hover:text-blue-400"
+                                    onClick={() => copyToClipboard(shortUrl)}
+                                  >
+                                    <Copy className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-cyber-red hover:text-red-400"
+                                    onClick={() => window.open(link.targetUrl, '_blank')}
+                                  >
+                                    <ExternalLink className="h-4 w-4" />
+                                  </Button>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
