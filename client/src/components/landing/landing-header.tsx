@@ -11,7 +11,7 @@ export function LandingHeader() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <img src="/attached_assets/ChatGPT Image Jul 24, 2025, 04_15_44 PM.png" alt="Tracentel Logo" className="w-10 h-10 object-contain" />
+            <img src="ChatGPT Image Jul 24, 2025, 04_15_44 PM.png" alt="Tracentel Logo" className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold text-white">TRACENTEL</span>
           </div>
 
