@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { Chatbot } from "@/components/chatbot"; // Added Chatbot import
 import { ContactForm } from "@/components/contact-form"; // Added ContactForm import
+import { useState } from "react";
 
 const createLinkSchema = insertShortlinkSchema.omit({ userId: true, slug: true });
 
@@ -109,6 +110,7 @@ export default function Dashboard() {
   };
 
   const recentEvents = clickEvents?.slice(0, 5) || [];
+  const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0d1117] via-[#0f172a] to-[#1e293b] text-slate-50 flex">
@@ -307,28 +309,50 @@ export default function Dashboard() {
                     ) : recentEvents.length === 0 ? (
                       <div className="text-slate-400">No recent activity</div>
                     ) : (
-                      recentEvents.map((event) => (
-                        <div key={event.id} className="flex items-center space-x-3 p-3 bg-cyber-dark rounded-lg">
-                          <div className="w-2 h-2 bg-cyber-green rounded-full"></div>
-                          <div className="flex-1">
-                            <p className="text-sm text-white">
-                              Link clicked from IP:
-                              <span className="font-mono text-cyber-blue ml-1">{event.ipAddress && event.ipAddress !== 'Unknown' ? event.ipAddress : 'Unknown'}</span>
-                              <br />Location: {event.city && event.city !== 'Unknown' ? event.city : 'Unknown'}, {event.country && event.country !== 'Unknown' ? event.country : 'Unknown'}
-                            </p>
-                            <p className="text-xs text-slate-400">
-                              {event.timestamp ? new Date(event.timestamp).toLocaleString() : "Unknown time"}
-                            </p>
-                          </div>
-                          <button
-                            className="ml-2 text-red-500 hover:text-red-700"
-                            title="Delete this record"
-                            onClick={() => deleteClickEvent(event.id)}
+                      recentEvents.map((event) => {
+                        const hasCoords = !!(event.latitude && event.longitude);
+                        const dotColor = hasCoords ? "bg-cyber-green" : "bg-yellow-400";
+                        const isExpanded = expandedEventId === event.id;
+                        return (
+                          <div
+                            key={event.id}
+                            className={`flex flex-col p-3 bg-cyber-dark rounded-lg cursor-pointer transition-all duration-200 ${isExpanded ? 'ring-2 ring-cyber-blue' : ''}`}
+                            onClick={() => setExpandedEventId(isExpanded ? null : event.id)}
                           >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        </div>
-                      ))
+                            <div className="flex items-center space-x-3">
+                              <div className={`w-2 h-2 rounded-full ${dotColor}`}></div>
+                              <div className="flex-1">
+                                <p className="text-sm text-white">
+                                  {event.city && event.city !== 'Unknown' ? event.city : 'Unknown City'}
+                                  <span className="text-xs text-slate-400 ml-2">{event.country && event.country !== 'Unknown' ? event.country : ''}</span>
+                                </p>
+                              </div>
+                              <span className="text-xs text-slate-400">{event.timestamp ? new Date(event.timestamp).toLocaleString() : "Unknown time"}</span>
+                            </div>
+                            {isExpanded && (
+                              <div className="mt-2 text-xs text-slate-300 space-y-1">
+                                <div><strong>IP:</strong> {event.ipAddress || 'Unknown'}</div>
+                                <div><strong>Browser:</strong> {event.browser || 'Unknown'}</div>
+                                <div><strong>OS:</strong> {event.os || 'Unknown'}</div>
+                                <div><strong>Device:</strong> {event.deviceModel || 'Unknown'} ({event.deviceType || 'Unknown'})</div>
+                                <div><strong>Coordinates:</strong> {hasCoords ? `${event.latitude}, ${event.longitude}` : 'Unknown'}</div>
+                                <div><strong>Screen:</strong> {event.screenResolution || 'Unknown'}</div>
+                                <div><strong>Language:</strong> {event.language || 'Unknown'}</div>
+                                <div><strong>ISP:</strong> {event.isp || 'Unknown'}</div>
+                                <div><strong>Timezone:</strong> {event.timezone || 'Unknown'}</div>
+                                <div><strong>User Agent:</strong> {event.userAgent || 'Unknown'}</div>
+                              </div>
+                            )}
+                            <button
+                              className="ml-auto mt-2 text-red-500 hover:text-red-700 w-fit"
+                              title="Delete this record"
+                              onClick={e => { e.stopPropagation(); deleteClickEvent(event.id); }}
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        );
+                      })
                     )}
                   </div>
                 </CardContent>

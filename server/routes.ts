@@ -279,14 +279,22 @@ export function registerRoutes(app: Express): Server {
       } catch (e) {
         console.log("Could not get backend IP info");
       }
+      // Fallback logic: use backend geolocation if client data is missing or 'Unknown'
+      let latitude = clientData.latitude;
+      let longitude = clientData.longitude;
+      if ((!latitude || !longitude) && ipInfo.loc) {
+        const [lat, lng] = ipInfo.loc.split(',').map(Number);
+        if (!latitude) latitude = lat;
+        if (!longitude) longitude = lng;
+      }
       const mergedData = {
         ...clientData,
-        // Fallback logic: use backend geolocation if client data is missing or 'Unknown'
         ipAddress: clientData.ipAddress && clientData.ipAddress !== 'Unknown' ? clientData.ipAddress : ipInfo.ip,
         country: clientData.country && clientData.country !== 'Unknown' ? clientData.country : ipInfo.country,
         city: clientData.city && clientData.city !== 'Unknown' ? clientData.city : ipInfo.city,
         isp: clientData.isp && clientData.isp !== 'Unknown' ? clientData.isp : ipInfo.org,
-        // Optionally, keep backend fields for debugging
+        latitude,
+        longitude,
         backendIp: ipInfo.ip,
         backendCountry: ipInfo.country,
         backendCity: ipInfo.city,
