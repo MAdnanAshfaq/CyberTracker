@@ -182,11 +182,24 @@ export function MapComponent({ clickEvents }: MapComponentProps) {
     );
   }
 
+  // Find the most recent click event with valid coordinates
+  const latestEventWithCoords = [...clickEvents].reverse().find(e => e.latitude && e.longitude);
+
   return (
-    <div 
-      ref={mapRef} 
-      className="w-full h-80 bg-slate-900 rounded-lg border border-slate-600"
-    />
+    <div className="relative">
+      <div 
+        ref={mapRef} 
+        className="w-full h-80 bg-slate-900 rounded-lg border border-slate-600"
+      />
+      {latestEventWithCoords && (
+        <button
+          onClick={() => window.open(`https://www.google.com/maps?q=${latestEventWithCoords.latitude},${latestEventWithCoords.longitude}`, '_blank')}
+          className="absolute right-4 bottom-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-lg z-10"
+        >
+          Redirect to Google Maps
+        </button>
+      )}
+    </div>
   );
 }
 

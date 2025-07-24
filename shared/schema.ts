@@ -82,7 +82,7 @@ export const insertClickEventSchema = z.object({
   isp: z.string().optional(),
   deviceModel: z.string().optional(),
   deviceType: z.string().optional(),
-  androidVersion: z.string().optional(),
+  androidVersion: z.string().nullable().optional(),
   timezone: z.string().optional(),
 });
 
