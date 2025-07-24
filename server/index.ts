@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+app.set('trust proxy', true); // Trust proxy for correct client IP
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

@@ -258,6 +258,7 @@ export function registerRoutes(app: Express): Server {
         // Use ipinfo.io for backend IP geolocation
         const ipHeader = req.headers["x-forwarded-for"];
         const ip = typeof ipHeader === 'string' ? ipHeader.split(",")[0] : req.connection.remoteAddress;
+        console.log('Backend detected IP:', ip);
         const ipinfoRes = await fetch(`https://ipinfo.io/${ip}/json?token=5c85542fb1e53b`);
         if (ipinfoRes.ok) {
           ipInfo = await ipinfoRes.json();
